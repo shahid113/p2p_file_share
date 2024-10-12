@@ -1,105 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P2P File Sharing</title>
+    <title>P2P File Transfer App</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <div class="container mt-2">
-        <h1 class="text-center" >P2P File Sharing</h1>
-        <div id="senderUI">
-            <div class="text-center">
-                <h2>Share Files Instantly</h2>
-                <p>Upload and share your files securely and quickly with our peer-to-peer technology.</p>
-                <div class="share-link">
-                    <input type="file" id="fileInput" class="form-control mb-3" style="display:none;">
-                    <button id="selectFile" class="btn btn-primary btn-lg" onclick="document.getElementById('fileInput').click();">Select File</button>
-                    
-                    <!-- Share Link Section -->
-                    <p id="shareLink" class="mt-3"></p>
-                    <button id="copyButton" class="btn btn-secondary copy-button">Copy Link</button>
-                </div>
-                <!-- Alert Section -->
-                <div id="alertPlaceholder"></div>
-            </div>
 
-            <div class="row feature">
-                <div class="col-md-4 text-center">
-                    <div class="feature-icon">🚀</div>
-                    <div class="feature-title">Fast Transfers</div>
-                    <p>Experience lightning-fast file transfers with our optimized protocol.</p>
-                </div>
-                <div class="col-md-4 text-center">
-                    <div class="feature-icon">🔒</div>
-                    <div class="feature-title">Secure Sharing</div>
-                    <p>Your files are transferred securely, ensuring your privacy.</p>
-                </div>
-                <div class="col-md-4 text-center">
-                    <div class="feature-icon">🌍</div>
-                    <div class="feature-title">Global Access</div>
-                    <p>Share files with anyone, anywhere in the world, instantly!</p>
-                </div>
-            </div>
-        </div>
+<!-- Hero Section -->
+<header class="bg-primary text-white text-center py-5">
+    <div class="container">
+        <h1 class="display-4">Seamless P2P File Transfer</h1>
+        <p class="lead">Transfer files securely and instantly, no cloud required!</p>
+    </div>
+</header>
 
-        <div id="receiverUI" class="text-center" style="display:none;">
-            <p id="status" class="alert alert-info">Connecting to peer...</p>
-            <button id="downloadButton" class="btn btn-success btn-lg text-center">Download File</button>
+
+<div class="container mt-5">
+    <div id="senderUI" class="ui-card p-4 shadow-lg rounded">
+        <h2 class="text-center mb-4">File Sender</h2>
+        <input type="file" id="fileInput" class="form-control mb-3" style="display:none;">
+        <button id="selectFile" class="btn btn-primary btn-block rounded">Select File</button>
+        <p id="status" class="mt-3"></p>
+        <div class="progress mt-3" style="display: none;">
+            <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
+        <p id="shareLink" class="text-center mt-4"></p>
+        <button id="copyButton" class="btn btn-secondary btn-block mt-2 rounded">Copy Link</button>
+        <div id="alertPlaceholder"></div>
     </div>
 
-    <div class="footer">
-        <p>&copy; 2024 P2P File Sharing. All rights reserved.</p>
+    <div id="receiverUI" class="ui-card p-4 shadow-lg rounded mt-5" style="display: none;">
+        <h2 class="text-center mb-4">File Receiver</h2>
+        <div id="receiverStatusMessage" class="alert alert-info text-center"></div>
+    
+        <div id="receiverProgressContainer" class="progress mt-4" style="display: none;">
+            <div id="receiverProgressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    
+        <a id="downloadButton" class="btn btn-success btn-lg mt-4" style="display: none;">Download</a>
     </div>
+</div>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="app.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        document.getElementById('copyButton').onclick = function() {
-            const shareLink = document.getElementById('shareLink').innerText;
+<!-- Features Section -->
+<section class="container my-5">
+    <h2 class="text-center mb-4">Why Choose Our File Transfer App?</h2>
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <i class="fas fa-lock fa-3x mb-3"></i>
+            <h4>Secure</h4>
+            <p>End-to-end encryption ensures your files are safe during transfer.</p>
+        </div>
+        <div class="col-md-4 text-center">
+            <i class="fas fa-bolt fa-3x mb-3"></i>
+            <h4>Fast</h4>
+            <p>Experience lightning-fast transfers, regardless of file size.</p>
+        </div>
+        <div class="col-md-4 text-center">
+            <i class="fas fa-cloud-download-alt fa-3x mb-3"></i>
+            <h4>Easy to Use</h4>
+            <p>No complicated setups. Just select, share, and transfer.</p>
+        </div>
+    </div>
+</section>
 
-            // Extract the part of the text starting with "http"
-            const httpLink = shareLink.match(/(http[^\s]+)/);
-            const linkToCopy = httpLink ? httpLink[0] : ''; // If there's no match, use an empty string
+<!-- How It Works Section -->
+<section class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">How It Works</h2>
+        <ol class="text-center">
+            <li class="my-3"><strong>Select a File:</strong> Choose the file you want to send.</li>
+            <li class="my-3"><strong>Generate a Link:</strong> A secure link will be created for your transfer.</li>
+            <li class="my-3"><strong>Share & Transfer:</strong> Send the link to your recipient and start the transfer!</li>
+        </ol>
+    </div>
+</section>
 
-            if (linkToCopy) {
-                navigator.clipboard.writeText(linkToCopy).then(() => {
-                    showAlert('Link copied to clipboard!', 'success');
-                }).catch(err => {
-                    showAlert('Failed to copy link.', 'danger');
-                });
-            } else {
-                showAlert('No valid link to copy!', 'danger');
-            }
-        };
+<!-- Call to Action -->
+<section class="text-center my-5">
+    <h2 class="mb-4">Start Transferring Files Today!</h2>
+    <p>Join thousands of users who trust our P2P file transfer service.</p>
+</section>
 
-        function showAlert(message, type) {
-            const alertPlaceholder = document.getElementById('alertPlaceholder');
-            const alert = document.createElement('div');
-            alert.className = `alert alert-${type} alert-dismissible fade show`;
-            alert.role = 'alert';
-            alert.innerHTML = `
-                ${message}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            `;
-            alertPlaceholder.appendChild(alert);
-            setTimeout(() => {
-                alert.remove();
-            }, 3000); // Auto-dismiss after 3 seconds
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-4">
+    <p>© 2024 P2P File Transfer App. All rights reserved.</p>
+    <p>
+        <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+    </p>
+</footer>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="app.js"></script>
+<script>
+    document.getElementById('copyButton').onclick = function() {
+        const shareLink = document.getElementById('shareLink').innerText;
+        const httpLink = shareLink.match(/(http[^\s]+)/);
+        const linkToCopy = httpLink ? httpLink[0] : '';
+
+        if (linkToCopy) {
+            navigator.clipboard.writeText(linkToCopy).then(() => {
+                showAlert('Link copied to clipboard!', 'success');
+            }).catch(err => {
+                showAlert('Failed to copy link.', 'danger');
+            });
+        } else {
+            showAlert('No valid link to copy!', 'danger');
         }
-    </script>
+    };
 
+    function showAlert(message, type) {
+        const alertPlaceholder = document.getElementById('alertPlaceholder');
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type} alert-dismissible fade show`;
+        alert.role = 'alert';
+        alert.innerHTML = `
+            ${message}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        `;
+        alertPlaceholder.appendChild(alert);
+        setTimeout(() => {
+            alert.remove();
+        }, 3000);
+    }
+</script>
 </body>
-
 </html>
